@@ -16,7 +16,9 @@
       // - align: { rowIdx: 'start'|'end'|'center' } row alignment overrides
       // - blocks: omit = all use color, 'white' = all white+border,
       //           2D array = per-block ('W' = white+border, null = base color, string = that color)
-      const W = "W";
+      const W = "W"; // white + border (like 10)
+      const B = "#f7dea9"; // beige (like 20)
+      const H = "H"; // hole (transparent)
 
       const NUMBERS = {
         1: {
@@ -181,47 +183,133 @@
           layout: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
         },
         // 21-30: initial guesses — Q will correct
+        // 21-29: first 20 blocks = beige (like 20), rest = digit color
         21: {
           color: "#E54B4B",
           layout: [3, 3, 3, 3, 3, 3, 3],
+          blocks: [
+            [B, B, B],
+            [B, B, B],
+            [B, B, B],
+            [B, "#E54B4B", B],
+            [B, B, B],
+            [B, B, B],
+            [B, B, B],
+          ],
         },
         22: {
           color: "#F5A623",
-          layout: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+          layout: [4, 4, 4, 4, 4, 2],
+          blocks: [
+            [B, B, B, B],
+            [B, B, B, B],
+            [B, B, B, B],
+            [B, B, B, B],
+            [B, B, B, B],
+            ["#F5A623", "#F5A623"],
+          ],
         },
         23: {
           color: "#F7DC6F",
-          layout: [3, 3, 3, 3, 3, 3, 3, 2],
-          align: { 7: "start" },
+          layout: [5, 5, 5, 4, 4],
+          align: { 3: "start", 4: "start" },
+          blocks: [
+            [B, B, B, B, "#F7DC6F"],
+            [B, B, B, B, "#F7DC6F"],
+            [B, B, B, B, "#F7DC6F"],
+            [B, B, B, B],
+            [B, B, B, B],
+          ],
         },
         24: {
           color: "#27AE60",
-          layout: [4, 4, 4, 4, 4, 4],
+          layout: [3, 3, 3, 3, 3, 3, 3, 3],
+          blocks: [
+            [B, B, B],
+            [B, B, B],
+            [B, "#27AE60", B],
+            [B, "#27AE60", B],
+            [B, "#27AE60", B],
+            [B, "#27AE60", B],
+            [B, B, B],
+            [B, B, B],
+          ],
         },
         25: {
           color: "#3498DB",
           layout: [5, 5, 5, 5, 5],
+          blocks: [
+            ["#3498DB", "#3498DB", "#3498DB", "#3498DB", "#3498DB"],
+            [B, B, B, B, B],
+            [B, B, B, B, B],
+            [B, B, B, B, B],
+            [B, B, B, B, B],
+          ],
         },
         26: {
           color: "#8E44AD",
-          layout: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+          layout: [4, 4, 4, 4, 4, 4, 2],
+          blocks: [
+            ["#8E44AD", "#8E44AD", "#8E44AD", "#8E44AD"],
+            ["#8E44AD", B, B, "#8E44AD"],
+            [B, B, B, B],
+            [B, B, B, B],
+            [B, B, B, B],
+            [B, B, B, B],
+            [B, B],
+          ],
         },
         27: {
           color: "#E67E22",
           layout: [3, 3, 3, 3, 3, 3, 3, 3, 3],
+          blocks: [
+            [B, B, B],
+            [B, "#E54B4B", B],
+            [B, "#F5A623", B],
+            [B, "#F7DC6F", B],
+            [B, "#27AE60", B],
+            [B, "#3498DB", B],
+            [B, "#6C5CE7", B],
+            [B, "#8E44AD", B],
+            [B, B, B],
+          ],
         },
         28: {
           color: "#E91E8C",
-          layout: [4, 4, 4, 4, 4, 4, 4],
+          layout: [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+          blocks: [
+            [B, B, B],
+            [B, H, B],
+            [B, B, B],
+            [B, H, B],
+            [B, B, B],
+            [B, H, B],
+            [B, B, B],
+            ["#E91E8C", "#E91E8C", "#E91E8C"],
+            ["#E91E8C", H, "#E91E8C"],
+            ["#E91E8C", "#E91E8C", "#E91E8C"],
+          ],
         },
         29: {
           color: "#2C3E50",
           layout: [3, 3, 3, 3, 3, 3, 3, 3, 3, 2],
           align: { 9: "start" },
+          blocks: [
+            [B, B, "#B0B0B0"],
+            [B, B, "#B0B0B0"],
+            [B, B, "#B0B0B0"],
+            [B, B, "#808080"],
+            [B, B, "#808080"],
+            [B, B, "#808080"],
+            [B, B, "#404040"],
+            [B, B, "#404040"],
+            [B, B, "#404040"],
+            [B, B],
+          ],
         },
         30: {
-          color: "#E74C3C",
-          layout: [5, 5, 5, 5, 5, 5],
+          color: "#fefab4",
+          layout: [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
         },
       };
 
@@ -295,6 +383,8 @@
             let blockColor = color;
             let isWhite = false;
 
+            let isHole = false;
+
             if (blocks === "white") {
               blockColor = "#FFFFFF";
               isWhite = true;
@@ -303,12 +393,16 @@
               if (cellVal === W) {
                 blockColor = "#FFFFFF";
                 isWhite = true;
+              } else if (cellVal === H) {
+                isHole = true;
               } else if (cellVal != null) {
                 blockColor = cellVal;
               }
             }
 
-            row.appendChild(createBlock(blockColor, hasFace, isWhite));
+            const block = createBlock(blockColor, hasFace, isWhite);
+            if (isHole) block.style.opacity = "0";
+            row.appendChild(block);
           }
 
           body.appendChild(row);
