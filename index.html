@@ -3,233 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Numberblocks 1–10</title>
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      body {
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: flex-end;
-        padding: 40px 20px 60px;
-        background: linear-gradient(
-          180deg,
-          #87ceeb 0%,
-          #e0f0ff 60%,
-          #90ee90 60%,
-          #228b22 100%
-        );
-        font-family: "Segoe UI", system-ui, sans-serif;
-      }
-
-      .stage {
-        display: flex;
-        align-items: flex-end;
-        gap: 28px;
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-
-      .numberblock {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        cursor: pointer;
-        transition: transform 0.2s;
-      }
-
-      .numberblock:hover {
-        transform: scale(1.08);
-      }
-
-      .numberblock:hover .body {
-        filter: brightness(1.08);
-      }
-
-      .body {
-        display: flex;
-        flex-direction: column-reverse;
-        transition: filter 0.2s;
-      }
-
-      .row {
-        display: flex;
-        justify-content: center;
-      }
-
-      .block {
-        width: 48px;
-        height: 48px;
-        border: 2px solid rgba(0, 0, 0, 0.15);
-        border-radius: 6px;
-        margin: 1px;
-        position: relative;
-        background: var(--color);
-        box-shadow:
-          inset 2px 2px 4px rgba(255, 255, 255, 0.4),
-          inset -1px -1px 3px rgba(0, 0, 0, 0.1);
-      }
-
-      /* Face on the top-center block */
-      .face {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .eyes {
-        display: flex;
-        gap: 8px;
-        margin-bottom: 2px;
-      }
-
-      .eye {
-        width: 10px;
-        height: 12px;
-        background: white;
-        border-radius: 50%;
-        position: relative;
-        border: 1px solid rgba(0, 0, 0, 0.2);
-      }
-
-      .eye::after {
-        content: "";
-        position: absolute;
-        width: 5px;
-        height: 5px;
-        background: #222;
-        border-radius: 50%;
-        top: 4px;
-        left: 50%;
-        transform: translateX(-50%);
-        transition: top 0.2s;
-      }
-
-      .numberblock:hover .eye::after {
-        top: 2px;
-      }
-
-      .mouth {
-        width: 10px;
-        height: 5px;
-        border-bottom: 2px solid #333;
-        border-radius: 0 0 5px 5px;
-        transition:
-          height 0.2s,
-          width 0.2s;
-      }
-
-      .numberblock:hover .mouth {
-        width: 12px;
-        height: 7px;
-        background: #c0392b;
-        border: 1px solid rgba(0, 0, 0, 0.2);
-        border-radius: 0 0 6px 6px;
-      }
-
-      /* Limbs */
-      .limbs {
-        position: relative;
-        width: 100%;
-        height: 0;
-      }
-
-      .arm {
-        position: absolute;
-        width: 8px;
-        height: 28px;
-        background: var(--color);
-        border-radius: 4px;
-        border: 1.5px solid rgba(0, 0, 0, 0.15);
-        top: -28px;
-      }
-
-      .arm-left {
-        left: -10px;
-        transform: rotate(10deg);
-      }
-
-      .arm-right {
-        right: -10px;
-        transform: rotate(-10deg);
-      }
-
-      .numberblock:hover .arm-left {
-        transform: rotate(-20deg);
-        transition: transform 0.3s;
-      }
-
-      .numberblock:hover .arm-right {
-        transform: rotate(20deg);
-        transition: transform 0.3s;
-      }
-
-      .legs {
-        display: flex;
-        justify-content: center;
-        gap: 6px;
-      }
-
-      .leg {
-        width: 10px;
-        height: 18px;
-        background: var(--color);
-        border-radius: 0 0 4px 4px;
-        border: 1.5px solid rgba(0, 0, 0, 0.15);
-        border-top: none;
-      }
-
-      .foot {
-        width: 16px;
-        height: 6px;
-        background: var(--color);
-        border-radius: 0 6px 6px 0;
-        border: 1.5px solid rgba(0, 0, 0, 0.15);
-        margin-top: -1px;
-      }
-
-      .leg:first-child .foot {
-        border-radius: 6px 0 0 6px;
-      }
-
-      .label {
-        margin-top: 10px;
-        font-size: 22px;
-        font-weight: 800;
-        color: var(--color);
-        text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.15);
-        filter: brightness(0.75);
-      }
-
-      /* Wave animation on click */
-      @keyframes wave {
-        0%,
-        100% {
-          transform: translateY(0);
-        }
-        25% {
-          transform: translateY(-12px);
-        }
-        50% {
-          transform: translateY(0);
-        }
-        75% {
-          transform: translateY(-6px);
-        }
-      }
-
-      .numberblock.wave .body {
-        animation: wave 0.5s ease;
-      }
-    </style>
+    <title>Numberblocks 1–20</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div class="stage" id="stage"></div>
@@ -247,6 +22,16 @@
         8: "#E91E8C", // magenta
         9: "#2C3E50", // dark blue
         10: "#E74C3C", // bright red (with white stripe)
+        11: "#E54B4B", // red (like 1)
+        12: "#F5A623", // orange (like 2)
+        13: "#F7DC6F", // yellow (like 3)
+        14: "#27AE60", // green (like 4)
+        15: "#3498DB", // blue (like 5)
+        16: "#8E44AD", // purple (like 6)
+        17: "#E91E63", // pink
+        18: "#D35400", // dark orange
+        19: "#1ABC9C", // teal
+        20: "#f7dea9", // warm beige
       };
 
       // Block layout per number: array of rows (bottom to top), each row = number of blocks
@@ -261,6 +46,16 @@
         8: [2, 2, 2, 2],
         9: [3, 3, 3],
         10: [2, 2, 2, 2, 2],
+        11: [2, 2, 2, 2, 2, 1],
+        12: [3, 3, 3, 3],
+        13: [2, 2, 2, 2, 3, 2],
+        14: [2, 2, 2, 2, 2, 2, 2],
+        15: [5, 4, 3, 2, 1],
+        16: [4, 4, 4, 4],
+        17: [2, 2, 2, 3, 3, 4, 1],
+        18: [3, 3, 3, 3, 3, 3], // 3x6 rectangle
+        19: [6, 6, 6, 1],
+        20: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
       };
 
       // Face goes on the top row, centered
@@ -311,13 +106,43 @@
             row.style.justifyContent = "flex-end";
           }
 
+          // Number 11: top single block aligns left
+          if (n === 11 && rowIdx === layout.length - 1 && count === 1) {
+            row.style.justifyContent = "flex-start";
+          }
+
+          // Number 13: bottom 2-block rows align left, top 2-block row aligns right
+          if (n === 13 && count === 2) {
+            row.style.justifyContent =
+              rowIdx === layout.length - 1 ? "flex-end" : "flex-start";
+          }
+
+          // Number 15: staircase aligned right
+          if (n === 15) {
+            row.style.justifyContent = "flex-end";
+          }
+
+          // Number 17: 3-block rows left, top 1-block right
+          if (n === 17) {
+            if (count === 3) row.style.justifyContent = "flex-start";
+            if (count === 1) row.style.justifyContent = "flex-end";
+          }
+
+          // Number 19: top single block aligns left
+          if (n === 19 && count === 1) {
+            row.style.justifyContent = "flex-start";
+          }
+
           for (let i = 0; i < count; i++) {
             const isTopRow = rowIdx === layout.length - 1;
             // Face on the center block of the top row
             const isCenterBlock =
               (count === 1 && i === 0) ||
               (count === 2 && i === 0) ||
-              (count === 3 && i === 1);
+              (count === 3 && i === 1) ||
+              (count === 4 && i === 1) ||
+              (count === 5 && i === 2) ||
+              (count === 6 && i === 2);
             const hasFace = isTopRow && isCenterBlock;
 
             const block = createBlock(color, hasFace);
@@ -348,6 +173,139 @@
             if (n === 10) {
               block.style.setProperty("--color", "#FFFFFF");
               block.style.border = "2px solid #ddd";
+            }
+
+            // Special: Number 12 — 3x4 white rectangle with orange Two in the center
+            if (n === 12) {
+              // Center column (i===1) of middle two rows (rowIdx 1 and 2) = orange
+              const isOrange = i === 1 && (rowIdx === 1 || rowIdx === 2);
+              if (isOrange) {
+                block.style.setProperty("--color", COLORS[2]);
+              } else {
+                block.style.setProperty("--color", "#FFFFFF");
+                block.style.border = "2px solid #ddd";
+              }
+            }
+
+            // Special: Number 13 — white Ten + yellow Three (upside-down L on top-right)
+            if (n === 13) {
+              // Top row (2 yellow) + rightmost block of row 4 (yellow)
+              const isYellow =
+                rowIdx === layout.length - 1 || (rowIdx === 4 && i === 2);
+              if (isYellow) {
+                block.style.setProperty("--color", COLORS[3]);
+              } else {
+                block.style.setProperty("--color", "#FFFFFF");
+                block.style.border = "2px solid #ddd";
+              }
+            }
+
+            // Special: Number 15 — rightmost block of each row is blue, rest white
+            if (n === 15) {
+              if (i === count - 1) {
+                block.style.setProperty("--color", COLORS[5]);
+              } else {
+                block.style.setProperty("--color", "#FFFFFF");
+                block.style.border = "2px solid #ddd";
+              }
+            }
+
+            // Special: Number 16 — bottom row all purple, 2nd row middle 2 purple, rest white
+            if (n === 16) {
+              const isPurple =
+                rowIdx === 0 || (rowIdx === 1 && (i === 1 || i === 2));
+              if (isPurple) {
+                block.style.setProperty("--color", COLORS[6]);
+              } else {
+                block.style.setProperty("--color", "#FFFFFF");
+                block.style.border = "2px solid #ddd";
+              }
+            }
+
+            // Special: Number 17 — white 2x5 base + rainbow Seven shape
+            if (n === 17) {
+              if (rowIdx < 3) {
+                // Rows 0-2: white
+                block.style.setProperty("--color", "#FFFFFF");
+                block.style.border = "2px solid #ddd";
+              } else if (rowIdx === 3) {
+                // R W W
+                if (i === 0) {
+                  block.style.setProperty("--color", "#E54B4B");
+                } else {
+                  block.style.setProperty("--color", "#FFFFFF");
+                  block.style.border = "2px solid #ddd";
+                }
+              } else if (rowIdx === 4) {
+                // O W W
+                if (i === 0) {
+                  block.style.setProperty("--color", "#F5A623");
+                } else {
+                  block.style.setProperty("--color", "#FFFFFF");
+                  block.style.border = "2px solid #ddd";
+                }
+              } else if (rowIdx === 5) {
+                // Y G B I
+                const ROW_COLORS = ["#F7DC6F", "#27AE60", "#3498DB", "#6C5CE7"];
+                block.style.setProperty("--color", ROW_COLORS[i]);
+              } else if (rowIdx === 6) {
+                // V
+                block.style.setProperty("--color", "#8E44AD");
+              }
+            }
+
+            // Special: Number 18 — reversed L magenta at bottom, white 2x5 top-left
+            if (n === 18) {
+              const isMagenta = rowIdx === 0 || i === 2;
+              if (isMagenta) {
+                block.style.setProperty("--color", COLORS[8]);
+              } else {
+                block.style.setProperty("--color", "#FFFFFF");
+                block.style.border = "2px solid #ddd";
+              }
+            }
+
+            // Special: Number 19 — white 10 left-bottom, grey 9 top-right + top-left single
+            if (n === 19) {
+              const GREY = "#808080";
+              const isGrey =
+                rowIdx === 3 || // top single block
+                rowIdx === 2 || // row 2: all grey
+                (rowIdx === 1 && (i === 4 || i === 5)); // row 1: right 2 grey (2x2)
+              if (isGrey) {
+                block.style.setProperty("--color", GREY);
+              } else {
+                block.style.setProperty("--color", "#FFFFFF");
+                block.style.border = "2px solid #ddd";
+              }
+            }
+
+            // Special: Numbers 11-19 (except 12, 13, 15, 16, 17, 18, 19)
+            if (
+              n >= 11 &&
+              n <= 19 &&
+              n !== 12 &&
+              n !== 13 &&
+              n !== 15 &&
+              n !== 16 &&
+              n !== 17 &&
+              n !== 18 &&
+              n !== 19
+            ) {
+              const blockIndex =
+                layout.slice(0, rowIdx).reduce((a, b) => a + b, 0) + i;
+              if (blockIndex < 10) {
+                block.style.setProperty("--color", "#FFFFFF");
+                block.style.border = "2px solid #ddd";
+              } else {
+                const digitColor = COLORS[n - 10];
+                block.style.setProperty("--color", digitColor);
+              }
+            }
+
+            // Special: Number 20 — all #f7dea9
+            if (n === 20) {
+              block.style.setProperty("--color", "#f7dea9");
             }
 
             row.appendChild(block);
@@ -396,7 +354,7 @@
 
       // Render all
       const stage = document.getElementById("stage");
-      for (let n = 1; n <= 10; n++) {
+      for (let n = 1; n <= 20; n++) {
         stage.appendChild(createNumberblock(n));
       }
     </script>
