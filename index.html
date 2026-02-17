@@ -3,66 +3,236 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Numberblocks 1–20</title>
+    <title>Numberblocks 1–30</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div class="stage" id="stage"></div>
 
     <script>
-      // Numberblocks canonical colors
-      const COLORS = {
-        1: "#E54B4B", // red
-        2: "#F5A623", // orange
-        3: "#F7DC6F", // yellow
-        4: "#27AE60", // green
-        5: "#3498DB", // blue (sky)
-        6: "#8E44AD", // purple
-        7: "#E67E22", // dark orange
-        8: "#E91E8C", // magenta
-        9: "#2C3E50", // dark blue
-        10: "#E74C3C", // bright red (with white stripe)
-        11: "#E54B4B", // red (like 1)
-        12: "#F5A623", // orange (like 2)
-        13: "#F7DC6F", // yellow (like 3)
-        14: "#27AE60", // green (like 4)
-        15: "#3498DB", // blue (like 5)
-        16: "#8E44AD", // purple (like 6)
-        17: "#E91E63", // pink
-        18: "#D35400", // dark orange
-        19: "#1ABC9C", // teal
-        20: "#f7dea9", // warm beige
+      // Config-driven Numberblocks definitions
+      // - color: base color (legs, arms, label, default blocks)
+      // - layout: rows bottom-to-top, each = block count
+      // - align: { rowIdx: 'start'|'end'|'center' } row alignment overrides
+      // - blocks: omit = all use color, 'white' = all white+border,
+      //           2D array = per-block ('W' = white+border, null = base color, string = that color)
+      const W = "W";
+
+      const NUMBERS = {
+        1: {
+          color: "#E54B4B",
+          layout: [1],
+        },
+        2: {
+          color: "#F5A623",
+          layout: [1, 1],
+        },
+        3: {
+          color: "#F7DC6F",
+          layout: [1, 1, 1],
+        },
+        4: {
+          color: "#27AE60",
+          layout: [2, 2],
+        },
+        5: {
+          color: "#3498DB",
+          layout: [2, 2, 1],
+          align: { 2: "end" },
+        },
+        6: {
+          color: "#8E44AD",
+          layout: [2, 2, 2],
+        },
+        7: {
+          color: "#E67E22",
+          layout: [1, 1, 1, 1, 1, 1, 1],
+          blocks: [
+            ["#E54B4B"],
+            ["#F5A623"],
+            ["#F7DC6F"],
+            ["#27AE60"],
+            ["#3498DB"],
+            ["#6C5CE7"],
+            ["#8E44AD"],
+          ],
+        },
+        8: {
+          color: "#E91E8C",
+          layout: [2, 2, 2, 2],
+        },
+        9: {
+          color: "#2C3E50",
+          layout: [3, 3, 3],
+          blocks: [
+            ["#B0B0B0", "#B0B0B0", "#B0B0B0"],
+            ["#808080", "#808080", "#808080"],
+            ["#404040", "#404040", "#404040"],
+          ],
+        },
+        10: {
+          color: "#E74C3C",
+          layout: [2, 2, 2, 2, 2],
+          blocks: "white",
+        },
+        11: {
+          color: "#E54B4B",
+          layout: [2, 2, 2, 2, 2, 1],
+          align: { 5: "start" },
+          blocks: [[W, W], [W, W], [W, W], [W, W], [W, W], ["#E54B4B"]],
+        },
+        12: {
+          color: "#F5A623",
+          layout: [3, 3, 3, 3],
+          blocks: [
+            [W, W, W],
+            [W, "#F5A623", W],
+            [W, "#F5A623", W],
+            [W, W, W],
+          ],
+        },
+        13: {
+          color: "#F7DC6F",
+          layout: [2, 2, 2, 2, 3, 2],
+          align: { 0: "start", 1: "start", 2: "start", 3: "start", 5: "end" },
+          blocks: [
+            [W, W],
+            [W, W],
+            [W, W],
+            [W, W],
+            [W, W, "#F7DC6F"],
+            ["#F7DC6F", "#F7DC6F"],
+          ],
+        },
+        14: {
+          color: "#27AE60",
+          layout: [2, 2, 2, 2, 2, 2, 2],
+          blocks: [
+            [W, W],
+            [W, W],
+            [W, W],
+            [W, W],
+            [W, W],
+            ["#27AE60", "#27AE60"],
+            ["#27AE60", "#27AE60"],
+          ],
+        },
+        15: {
+          color: "#3498DB",
+          layout: [5, 4, 3, 2, 1],
+          align: { 0: "end", 1: "end", 2: "end", 3: "end", 4: "end" },
+          blocks: [
+            [W, W, W, W, "#3498DB"],
+            [W, W, W, "#3498DB"],
+            [W, W, "#3498DB"],
+            [W, "#3498DB"],
+            ["#3498DB"],
+          ],
+        },
+        16: {
+          color: "#8E44AD",
+          layout: [4, 4, 4, 4],
+          blocks: [
+            ["#8E44AD", "#8E44AD", "#8E44AD", "#8E44AD"],
+            [W, "#8E44AD", "#8E44AD", W],
+            [W, W, W, W],
+            [W, W, W, W],
+          ],
+        },
+        17: {
+          color: "#E91E63",
+          layout: [2, 2, 2, 3, 3, 4, 1],
+          align: { 3: "start", 4: "start", 6: "end" },
+          blocks: [
+            [W, W],
+            [W, W],
+            [W, W],
+            ["#E54B4B", W, W],
+            ["#F5A623", W, W],
+            ["#F7DC6F", "#27AE60", "#3498DB", "#6C5CE7"],
+            ["#8E44AD"],
+          ],
+        },
+        18: {
+          color: "#D35400",
+          layout: [3, 3, 3, 3, 3, 3],
+          blocks: [
+            ["#E91E8C", "#E91E8C", "#E91E8C"],
+            [W, W, "#E91E8C"],
+            [W, W, "#E91E8C"],
+            [W, W, "#E91E8C"],
+            [W, W, "#E91E8C"],
+            [W, W, "#E91E8C"],
+          ],
+        },
+        19: {
+          color: "#1ABC9C",
+          layout: [6, 6, 6, 1],
+          align: { 3: "start" },
+          blocks: [
+            [W, W, W, W, W, W],
+            [W, W, W, W, "#808080", "#808080"],
+            ["#808080", "#808080", "#808080", "#808080", "#808080", "#808080"],
+            ["#808080"],
+          ],
+        },
+        20: {
+          color: "#f7dea9",
+          layout: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+        },
+        // 21-30: initial guesses — Q will correct
+        21: {
+          color: "#E54B4B",
+          layout: [3, 3, 3, 3, 3, 3, 3],
+        },
+        22: {
+          color: "#F5A623",
+          layout: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+        },
+        23: {
+          color: "#F7DC6F",
+          layout: [3, 3, 3, 3, 3, 3, 3, 2],
+          align: { 7: "start" },
+        },
+        24: {
+          color: "#27AE60",
+          layout: [4, 4, 4, 4, 4, 4],
+        },
+        25: {
+          color: "#3498DB",
+          layout: [5, 5, 5, 5, 5],
+        },
+        26: {
+          color: "#8E44AD",
+          layout: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+        },
+        27: {
+          color: "#E67E22",
+          layout: [3, 3, 3, 3, 3, 3, 3, 3, 3],
+        },
+        28: {
+          color: "#E91E8C",
+          layout: [4, 4, 4, 4, 4, 4, 4],
+        },
+        29: {
+          color: "#2C3E50",
+          layout: [3, 3, 3, 3, 3, 3, 3, 3, 3, 2],
+          align: { 9: "start" },
+        },
+        30: {
+          color: "#E74C3C",
+          layout: [5, 5, 5, 5, 5, 5],
+        },
       };
 
-      // Block layout per number: array of rows (bottom to top), each row = number of blocks
-      const LAYOUTS = {
-        1: [1],
-        2: [1, 1],
-        3: [1, 1, 1],
-        4: [2, 2],
-        5: [2, 2, 1],
-        6: [2, 2, 2],
-        7: [1, 1, 1, 1, 1, 1, 1],
-        8: [2, 2, 2, 2],
-        9: [3, 3, 3],
-        10: [2, 2, 2, 2, 2],
-        11: [2, 2, 2, 2, 2, 1],
-        12: [3, 3, 3, 3],
-        13: [2, 2, 2, 2, 3, 2],
-        14: [2, 2, 2, 2, 2, 2, 2],
-        15: [5, 4, 3, 2, 1],
-        16: [4, 4, 4, 4],
-        17: [2, 2, 2, 3, 3, 4, 1],
-        18: [3, 3, 3, 3, 3, 3], // 3x6 rectangle
-        19: [6, 6, 6, 1],
-        20: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
-      };
-
-      // Face goes on the top row, centered
-      function createBlock(color, hasFace) {
+      function createBlock(color, hasFace, isWhite) {
         const block = document.createElement("div");
         block.className = "block";
         block.style.setProperty("--color", color);
+
+        if (isWhite) {
+          block.style.border = "2px solid #ddd";
+        }
 
         if (hasFace) {
           block.innerHTML = `
@@ -79,13 +249,15 @@
       }
 
       function createNumberblock(n) {
-        const color = COLORS[n];
-        const layout = LAYOUTS[n];
+        const cfg = NUMBERS[n];
+        if (!cfg) return null;
+
+        const { color, layout, align = {}, blocks } = cfg;
         const container = document.createElement("div");
         container.className = "numberblock";
         container.style.setProperty("--color", color);
 
-        // Arms wrapper
+        // Arms
         const limbs = document.createElement("div");
         limbs.className = "limbs";
         limbs.innerHTML = `
@@ -101,41 +273,15 @@
           const row = document.createElement("div");
           row.className = "row";
 
-          // Number 5: top single block aligns right
-          if (n === 5 && rowIdx === layout.length - 1 && count === 1) {
-            row.style.justifyContent = "flex-end";
-          }
-
-          // Number 11: top single block aligns left
-          if (n === 11 && rowIdx === layout.length - 1 && count === 1) {
-            row.style.justifyContent = "flex-start";
-          }
-
-          // Number 13: bottom 2-block rows align left, top 2-block row aligns right
-          if (n === 13 && count === 2) {
+          // Apply alignment from config
+          if (align[rowIdx]) {
+            const a = align[rowIdx];
             row.style.justifyContent =
-              rowIdx === layout.length - 1 ? "flex-end" : "flex-start";
-          }
-
-          // Number 15: staircase aligned right
-          if (n === 15) {
-            row.style.justifyContent = "flex-end";
-          }
-
-          // Number 17: 3-block rows left, top 1-block right
-          if (n === 17) {
-            if (count === 3) row.style.justifyContent = "flex-start";
-            if (count === 1) row.style.justifyContent = "flex-end";
-          }
-
-          // Number 19: top single block aligns left
-          if (n === 19 && count === 1) {
-            row.style.justifyContent = "flex-start";
+              a === "start" ? "flex-start" : a === "end" ? "flex-end" : a;
           }
 
           for (let i = 0; i < count; i++) {
             const isTopRow = rowIdx === layout.length - 1;
-            // Face on the center block of the top row
             const isCenterBlock =
               (count === 1 && i === 0) ||
               (count === 2 && i === 0) ||
@@ -145,181 +291,32 @@
               (count === 6 && i === 2);
             const hasFace = isTopRow && isCenterBlock;
 
-            const block = createBlock(color, hasFace);
+            // Determine block color
+            let blockColor = color;
+            let isWhite = false;
 
-            // Special: Number 9 has 3 shades of grey (light bottom, dark top)
-            if (n === 9) {
-              const GREYS = ["#B0B0B0", "#808080", "#404040"];
-              block.style.setProperty("--color", GREYS[rowIdx]);
-            }
-
-            // Special: Number 7 is rainbow (bottom to top)
-            if (n === 7) {
-              const RAINBOW = [
-                "#E54B4B", // red
-                "#F5A623", // orange
-                "#F7DC6F", // yellow
-                "#27AE60", // green
-                "#3498DB", // blue
-                "#6C5CE7", // indigo
-                "#8E44AD", // violet
-              ];
-              const blockIndex =
-                layout.slice(0, rowIdx).reduce((a, b) => a + b, 0) + i;
-              block.style.setProperty("--color", RAINBOW[blockIndex]);
-            }
-
-            // Special: Number 10 is all white
-            if (n === 10) {
-              block.style.setProperty("--color", "#FFFFFF");
-              block.style.border = "2px solid #ddd";
-            }
-
-            // Special: Number 12 — 3x4 white rectangle with orange Two in the center
-            if (n === 12) {
-              // Center column (i===1) of middle two rows (rowIdx 1 and 2) = orange
-              const isOrange = i === 1 && (rowIdx === 1 || rowIdx === 2);
-              if (isOrange) {
-                block.style.setProperty("--color", COLORS[2]);
-              } else {
-                block.style.setProperty("--color", "#FFFFFF");
-                block.style.border = "2px solid #ddd";
+            if (blocks === "white") {
+              blockColor = "#FFFFFF";
+              isWhite = true;
+            } else if (Array.isArray(blocks) && blocks[rowIdx]) {
+              const cellVal = blocks[rowIdx][i];
+              if (cellVal === W) {
+                blockColor = "#FFFFFF";
+                isWhite = true;
+              } else if (cellVal != null) {
+                blockColor = cellVal;
               }
             }
 
-            // Special: Number 13 — white Ten + yellow Three (upside-down L on top-right)
-            if (n === 13) {
-              // Top row (2 yellow) + rightmost block of row 4 (yellow)
-              const isYellow =
-                rowIdx === layout.length - 1 || (rowIdx === 4 && i === 2);
-              if (isYellow) {
-                block.style.setProperty("--color", COLORS[3]);
-              } else {
-                block.style.setProperty("--color", "#FFFFFF");
-                block.style.border = "2px solid #ddd";
-              }
-            }
-
-            // Special: Number 15 — rightmost block of each row is blue, rest white
-            if (n === 15) {
-              if (i === count - 1) {
-                block.style.setProperty("--color", COLORS[5]);
-              } else {
-                block.style.setProperty("--color", "#FFFFFF");
-                block.style.border = "2px solid #ddd";
-              }
-            }
-
-            // Special: Number 16 — bottom row all purple, 2nd row middle 2 purple, rest white
-            if (n === 16) {
-              const isPurple =
-                rowIdx === 0 || (rowIdx === 1 && (i === 1 || i === 2));
-              if (isPurple) {
-                block.style.setProperty("--color", COLORS[6]);
-              } else {
-                block.style.setProperty("--color", "#FFFFFF");
-                block.style.border = "2px solid #ddd";
-              }
-            }
-
-            // Special: Number 17 — white 2x5 base + rainbow Seven shape
-            if (n === 17) {
-              if (rowIdx < 3) {
-                // Rows 0-2: white
-                block.style.setProperty("--color", "#FFFFFF");
-                block.style.border = "2px solid #ddd";
-              } else if (rowIdx === 3) {
-                // R W W
-                if (i === 0) {
-                  block.style.setProperty("--color", "#E54B4B");
-                } else {
-                  block.style.setProperty("--color", "#FFFFFF");
-                  block.style.border = "2px solid #ddd";
-                }
-              } else if (rowIdx === 4) {
-                // O W W
-                if (i === 0) {
-                  block.style.setProperty("--color", "#F5A623");
-                } else {
-                  block.style.setProperty("--color", "#FFFFFF");
-                  block.style.border = "2px solid #ddd";
-                }
-              } else if (rowIdx === 5) {
-                // Y G B I
-                const ROW_COLORS = ["#F7DC6F", "#27AE60", "#3498DB", "#6C5CE7"];
-                block.style.setProperty("--color", ROW_COLORS[i]);
-              } else if (rowIdx === 6) {
-                // V
-                block.style.setProperty("--color", "#8E44AD");
-              }
-            }
-
-            // Special: Number 18 — reversed L magenta at bottom, white 2x5 top-left
-            if (n === 18) {
-              const isMagenta = rowIdx === 0 || i === 2;
-              if (isMagenta) {
-                block.style.setProperty("--color", COLORS[8]);
-              } else {
-                block.style.setProperty("--color", "#FFFFFF");
-                block.style.border = "2px solid #ddd";
-              }
-            }
-
-            // Special: Number 19 — white 10 left-bottom, grey 9 top-right + top-left single
-            if (n === 19) {
-              const GREY = "#808080";
-              const isGrey =
-                rowIdx === 3 || // top single block
-                rowIdx === 2 || // row 2: all grey
-                (rowIdx === 1 && (i === 4 || i === 5)); // row 1: right 2 grey (2x2)
-              if (isGrey) {
-                block.style.setProperty("--color", GREY);
-              } else {
-                block.style.setProperty("--color", "#FFFFFF");
-                block.style.border = "2px solid #ddd";
-              }
-            }
-
-            // Special: Numbers 11-19 (except 12, 13, 15, 16, 17, 18, 19)
-            if (
-              n >= 11 &&
-              n <= 19 &&
-              n !== 12 &&
-              n !== 13 &&
-              n !== 15 &&
-              n !== 16 &&
-              n !== 17 &&
-              n !== 18 &&
-              n !== 19
-            ) {
-              const blockIndex =
-                layout.slice(0, rowIdx).reduce((a, b) => a + b, 0) + i;
-              if (blockIndex < 10) {
-                block.style.setProperty("--color", "#FFFFFF");
-                block.style.border = "2px solid #ddd";
-              } else {
-                const digitColor = COLORS[n - 10];
-                block.style.setProperty("--color", digitColor);
-              }
-            }
-
-            // Special: Number 20 — all #f7dea9
-            if (n === 20) {
-              block.style.setProperty("--color", "#f7dea9");
-            }
-
-            row.appendChild(block);
+            row.appendChild(createBlock(blockColor, hasFace, isWhite));
           }
 
           body.appendChild(row);
         });
 
-        // Position arms relative to body
-        const topRowWidth = layout[layout.length - 1] * 52;
+        // Position arms
         const bodyWidth = Math.max(...layout) * 52;
         limbs.style.width = bodyWidth + "px";
-
-        // Adjust arm position to be at the sides of the top row area
         const armTop = layout.length * 52;
         limbs.querySelector(".arm-left").style.top = `-${armTop - 10}px`;
         limbs.querySelector(".arm-right").style.top = `-${armTop - 10}px`;
@@ -354,7 +351,7 @@
 
       // Render all
       const stage = document.getElementById("stage");
-      for (let n = 1; n <= 20; n++) {
+      for (let n = 1; n <= 30; n++) {
         stage.appendChild(createNumberblock(n));
       }
     </script>
